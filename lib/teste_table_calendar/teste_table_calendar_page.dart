@@ -15,15 +15,26 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
 
   // Variáveis de apoio
   final DateTime firstDay = DateTime(2021, 1, 1);
-  final DateTime _currentDateSystem = DateTime.now().add(const Duration(days: 90));
+  final DateTime _currentDateSystem = DateTime.now();
 
-  DateTime currentDay = DateTime.now().add(const Duration(days: 90));
+  DateTime currentDay = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
 
   DateTime? initialRange;
   DateTime? endRange;
 
-  
+  final List<DateTime> dates = [
+    DateTime.now(),
+    DateTime.now().subtract(const Duration(days: 1)),
+    DateTime.now().subtract(const Duration(days: 2)),
+    DateTime.now().subtract(const Duration(days: 2)),
+    DateTime.now().subtract(const Duration(days: 3)),
+    DateTime.now().subtract(const Duration(days: 5)),
+    DateTime.now().subtract(const Duration(days: 5)),
+    DateTime.now().subtract(const Duration(days: 7)),
+    DateTime.now().subtract(const Duration(days: 7)),
+    DateTime.now().subtract(const Duration(days: 7)),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +52,7 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
               horizontal: 10,
               vertical: 10
             ),
-            child: TableCalendar(
+            child: TableCalendar<DateTime>(
               focusedDay: currentDay, 
               locale: "pt_BR",
               onPageChanged: (day) {
@@ -56,6 +67,29 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   });
                 }
               },
+              calendarBuilders: CalendarBuilders<DateTime>(
+                markerBuilder: (_,date,events) {
+
+                  if(events.isNotEmpty) {
+                    return Visibility(
+                      visible: !isSameDay(date, _currentDateSystem) || !isSameDay(_currentDateSystem, currentDay),
+                      child: Container(
+                        height: 7,
+                        width: 7,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue[900],
+                        ),
+                      ),
+                    );
+                  }
+                }
+              ),
+              eventLoader: (date) {
+                var sameDay = dates.where((element) => isSameDay(element, date)).toList();
+                return sameDay;
+              },
+              
               firstDay: firstDay, 
               lastDay: _currentDateSystem,
               calendarFormat: calendarFormat,
