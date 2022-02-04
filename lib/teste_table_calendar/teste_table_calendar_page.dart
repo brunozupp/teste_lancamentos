@@ -10,8 +10,9 @@ class TesteTableCalendarPage extends StatefulWidget {
 
 class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
   
-  DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
+  // DateTime selectedDay = DateTime.now();
+  // DateTime focusedDay = DateTime.now();
+  DateTime currentDay = DateTime.now().add(Duration(days: 90));
   CalendarFormat calendarFormat = CalendarFormat.month;
 
   DateTime? initialRange;
@@ -19,12 +20,13 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
 
   // Variáveis de apoio
   final DateTime firstDay = DateTime(2021, 1, 1);
-  final DateTime _currentDateSystem = DateTime.now();
+  final DateTime _currentDateSystem = DateTime.now().add(Duration(days: 90));
 
   @override
   Widget build(BuildContext context) {
 
-    print(DateTime(2022,_currentDateSystem.month,0));
+    print(_currentDateSystem);
+    //print(DateTime(2022,_currentDateSystem.month,0));
 
     return Scaffold(
       appBar: AppBar(
@@ -35,9 +37,23 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
       body: Column(
         children: [
           TableCalendar(
-            focusedDay: focusedDay, 
+            focusedDay: currentDay, 
+
+            onPageChanged: (day) {
+              print("MUDOUUUU");
+
+              if(day.month == _currentDateSystem.month && day.year == _currentDateSystem.year) {
+                setState(() {
+                  currentDay = _currentDateSystem;
+                });
+              } else {
+                setState(() {
+                  currentDay = day;
+                });
+              }
+            },
             firstDay: firstDay, 
-            lastDay: DateTime.now(),
+            lastDay: _currentDateSystem,
             calendarFormat: calendarFormat,
             rangeStartDay: initialRange,
             rangeEndDay: endRange,
@@ -48,7 +64,7 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                 print("Start - $start");
                 print("End - $end");
                 print("focusedDay - $focusedDay");
-                print("selectedDay - $selectedDay");
+                print("selectedDay - $currentDay");
                 print("\n");
 
                 // Mês anterior e pode selecionar apenas os últimos 5 dias úteis
@@ -58,13 +74,25 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   DateTime lastDayFromPreviousMonth = DateTime(start.year, _currentDateSystem.month, 0);
                   DateTime fifthLastDayFromPreviousMonth = lastDayFromPreviousMonth.subtract(const Duration(days: 4));
 
+                  DateTime.april;
+
+                  print("lastDayFromPreviousMonth - $lastDayFromPreviousMonth");
+                  print("fifthLastDayFromPreviousMonth - $fifthLastDayFromPreviousMonth");
+
                   if(start.isBefore(fifthLastDayFromPreviousMonth)) {
                     initialRange = null;
                     endRange = null;
                     return;
                   }
                 }
-
+                
+                // Caso não seja o mesmo ano da data atual ou do mesmo mês, respeitando a  validação do mês anterior acima, vai limpar tudo
+                if((start != null && start.year < _currentDateSystem.year) || _currentDateSystem.month - start!.month > 1) {
+                  initialRange = null;
+                  endRange = null;
+                  return;
+                }
+                
                 if(initialRange != null && endRange != null) {
                   initialRange = null;
                   endRange = null;
@@ -75,7 +103,7 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   return;
                 }
 
-                if(initialRange != null && start != null && start.isBefore(initialRange!)) {
+                if(initialRange != null && start.isBefore(initialRange!)) {
                   initialRange = start;
                   endRange = null;
                   return;
@@ -84,24 +112,20 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                 if(initialRange != null) {
                   endRange = start;
                   return;
-                }
-
-                // initialRange = start;
-                // endRange = end;
-
-                
+                }         
               });
             },
             onDaySelected: (selectedDay, focusedDay) {
               
               setState(() {
-                this.selectedDay = selectedDay;
-                this.focusedDay = focusedDay;
+                currentDay = focusedDay;
+                //this.selectedDay = selectedDay;
+                //this.focusedDay = focusedDay;
               });
             },
-            currentDay: selectedDay,
+            currentDay: currentDay,
             selectedDayPredicate: (day) {
-              return isSameDay(selectedDay, day);
+              return isSameDay(currentDay, day);
             },
             weekendDays: const [],
             onFormatChanged: (format) {
