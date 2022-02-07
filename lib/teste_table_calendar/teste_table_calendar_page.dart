@@ -67,12 +67,15 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   });
                 }
               },
+              // holidayPredicate: (date) {
+                
+              // },
               calendarBuilders: CalendarBuilders<DateTime>(
                 markerBuilder: (_,date,events) {
 
                   if(events.isNotEmpty) {
                     return Visibility(
-                      visible: !isSameDay(date, _currentDateSystem) || !isSameDay(_currentDateSystem, currentDay),
+                      visible: !isSameDay(date, currentDay),
                       child: Container(
                         height: 7,
                         width: 7,
