@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teste_lancamentos/teste_snackbar/teste_snackbar_um.dart';
 import 'package:teste_lancamentos/teste_table_calendar/teste_table_calendar_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -17,13 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TesteTableCalendarPage(),
+      home: const TesteSnackbarUm(),
       locale: const Locale("pt","BR"),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        //GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
         Locale("pt", "BR"),
         Locale('en'),
