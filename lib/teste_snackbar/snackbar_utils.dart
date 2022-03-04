@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:teste_lancamentos/teste_snackbar/snackbar_card_widget.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class SnackBarUtils {
@@ -16,45 +17,7 @@ class SnackBarUtils {
       context,
       Material(
         type: MaterialType.transparency,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 30,
-            horizontal: 20
-          ),
-          decoration: BoxDecoration(
-            color: snackbarCustomModal.backgroundColor,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(0.0, 8.0),
-                spreadRadius: 1,
-                blurRadius: 30,
-              ),
-            ]
-          ),
-          child: Row(
-            children: [
-              Icon(
-                snackbarCustomModal.icon,
-                color: snackbarCustomModal.iconColor,
-                size: 30,
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Text(
-                  snackbarCustomModal.message,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: SnackbarCardWidget(snackbarCustomModal: snackbarCustomModal)
       ),
       displayDuration: const Duration(seconds: 2),
     );

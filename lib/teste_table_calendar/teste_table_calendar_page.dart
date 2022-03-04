@@ -17,10 +17,9 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
   final DateTime firstDay = DateTime(2021, 1, 1);
   final DateTime _currentDateSystem = DateTime.now();
 
-  DateTime currentDay = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.month;
 
-  DateTime? initialRange;
+  DateTime initialRange = DateTime.now();
   DateTime? endRange;
 
   final List<DateTime> dates = [
@@ -53,19 +52,21 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
               vertical: 10
             ),
             child: TableCalendar<DateTime>(
-              focusedDay: currentDay, 
+              focusedDay: initialRange, 
               locale: "pt_BR",
               onPageChanged: (day) {
 
                 if(day.month == _currentDateSystem.month && day.year == _currentDateSystem.year) {
-                  setState(() {
-                    currentDay = _currentDateSystem;
-                  });
+                  initialRange = _currentDateSystem;
                 } else {
-                  setState(() {
-                    currentDay = day;
-                  });
+                  initialRange = day;
                 }
+
+                endRange = null;
+                
+                setState(() {
+                  
+                });
               },
               // holidayPredicate: (date) {
                 
@@ -75,7 +76,7 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
 
                   if(events.isNotEmpty) {
                     return Visibility(
-                      visible: !isSameDay(date, currentDay),
+                      visible: !isSameDay(date, initialRange),
                       child: Container(
                         height: 7,
                         width: 7,
@@ -99,72 +100,107 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
               rangeStartDay: initialRange,
               rangeEndDay: endRange,
               rangeSelectionMode: RangeSelectionMode.toggledOff,
-              onRangeSelected: (DateTime? start, DateTime? end, DateTime focusedDay) {
-                setState(() {
+              // onRangeSelected: (DateTime? start, DateTime? end, DateTime focusedDay) {
+              //   setState(() {
 
-                  log("Start - $start");
-                  log("End - $end");
-                  log("focusedDay - $focusedDay");
-                  log("selectedDay - $currentDay");
-                  log("\n");
+              //     log("Start - $start");
+              //     log("End - $end");
+              //     log("focusedDay - $focusedDay");
+              //     log("selectedDay - $initialRange");
+              //     log("\n");
 
-                  // Mês anterior e pode selecionar apenas os últimos 5 dias úteis
-                  if(start != null && (_currentDateSystem.month - 1) == start.month) {
+              //     // Mês anterior e pode selecionar apenas os últimos 5 dias úteis
+              //     if(start != null && (_currentDateSystem.month - 1) == start.month) {
 
-                    // O dia vai estar setado para o último dia do mês
-                    DateTime lastDayFromPreviousMonth = DateTime(start.year, _currentDateSystem.month, 0);
-                    DateTime fifthLastDayFromPreviousMonth = lastDayFromPreviousMonth.subtract(const Duration(days: 4));
+              //       // O dia vai estar setado para o último dia do mês
+              //       DateTime lastDayFromPreviousMonth = DateTime(start.year, _currentDateSystem.month, 0);
+              //       DateTime fifthLastDayFromPreviousMonth = lastDayFromPreviousMonth.subtract(const Duration(days: 4));
 
-                    DateTime.april;
+              //       log("lastDayFromPreviousMonth - $lastDayFromPreviousMonth");
+              //       log("fifthLastDayFromPreviousMonth - $fifthLastDayFromPreviousMonth");
 
-                    log("lastDayFromPreviousMonth - $lastDayFromPreviousMonth");
-                    log("fifthLastDayFromPreviousMonth - $fifthLastDayFromPreviousMonth");
-
-                    if(start.isBefore(fifthLastDayFromPreviousMonth)) {
-                      initialRange = null;
-                      endRange = null;
-                      return;
-                    }
-                  }
+              //       if(start.isBefore(fifthLastDayFromPreviousMonth)) {
+              //         initialRange = null;
+              //         endRange = null;
+              //         return;
+              //       }
+              //     }
                   
-                  // Caso não seja o mesmo ano da data atual ou do mesmo mês, respeitando a  validação do mês anterior acima, vai limpar tudo
-                  if((start != null && start.year < _currentDateSystem.year) || _currentDateSystem.month - start!.month > 1) {
-                    initialRange = null;
-                    endRange = null;
-                    return;
-                  }
+              //     // Caso não seja o mesmo ano da data atual ou do mesmo mês, respeitando a  validação do mês anterior acima, vai limpar tudo
+              //     if((start != null && start.year < _currentDateSystem.year) || _currentDateSystem.month - start!.month > 1) {
+              //       initialRange = null;
+              //       endRange = null;
+              //       return;
+              //     }
                   
-                  if(initialRange != null && endRange != null) {
-                    initialRange = null;
-                    endRange = null;
-                  }
+              //     if(initialRange != null && endRange != null) {
+              //       initialRange = null;
+              //       endRange = null;
+              //     }
 
-                  if(initialRange == null) {
-                    initialRange = start;
-                    return;
-                  }
+              //     if(initialRange == null) {
+              //       initialRange = start;
+              //       return;
+              //     }
 
-                  if(initialRange != null && start.isBefore(initialRange!)) {
-                    initialRange = start;
-                    endRange = null;
-                    return;
-                  }
+              //     if(initialRange != null && start.isBefore(initialRange!)) {
+              //       initialRange = start;
+              //       endRange = null;
+              //       return;
+              //     }
 
-                  if(initialRange != null) {
-                    endRange = start;
-                    return;
-                  }         
-                });
-              },
+              //     if(initialRange != null) {
+              //       endRange = start;
+              //       return;
+              //     }         
+              //   });
+              // },
               onDaySelected: (selectedDay, focusedDay) {
                 
                 setState(() {
-                  currentDay = focusedDay;
+                  
+                  // Caso a data para selecionar esteja fora do range do mês atual ou do mês anterior, não executa nada
+                  if (((_currentDateSystem.month - 1) != focusedDay.month && _currentDateSystem.month != focusedDay.month)) {
+                    return;
+                  }
+
+                  // Caso não seja o mesmo ano da data atual ou do mesmo mês, respeitando a  validação do mês anterior acima, vai limpar tudo
+                  if ((focusedDay.year < _currentDateSystem.year) ||
+                      _currentDateSystem.month - focusedDay.month > 1) {
+                    initialRange = focusedDay;
+                    endRange = null;
+                    return;
+                  }
+
+                  // Se endRange != null
+                  if(endRange != null) {
+                    endRange = null;
+                    initialRange = focusedDay;
+                    return;
+                  }
+
+                  if (focusedDay.isBefore(initialRange)) {
+                    initialRange = focusedDay;
+                    endRange = null;
+                    return;
+                  }
+
+                  if (focusedDay.month > initialRange.month) {
+                    initialRange = focusedDay;
+                    endRange = null;
+                    return;
+                  }
+
+                  if(endRange == null) {
+                    endRange = focusedDay;
+                    return;
+                  }
+
                 });
               },
-              currentDay: currentDay,
+              currentDay: initialRange,
               selectedDayPredicate: (day) {
-                return isSameDay(currentDay, day);
+                return isSameDay(initialRange, day);
               },
               weekendDays: const [],
               onFormatChanged: (format) {
@@ -174,7 +210,7 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
               },
               calendarStyle: CalendarStyle(
                 selectedDecoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
                 withinRangeDecoration: const BoxDecoration(
@@ -182,14 +218,14 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   shape: BoxShape.circle,
                 ),
                 rangeEndDecoration: BoxDecoration(
-                  color: Colors.blue[300]!,
+                  color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
                 rangeStartDecoration: BoxDecoration(
-                  color: Colors.blue[300]!,
+                  color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
-                
+                rangeHighlightColor: Colors.grey.withOpacity(0.2),
               ),
               availableCalendarFormats: const {
                 CalendarFormat.month: 'Semanal',

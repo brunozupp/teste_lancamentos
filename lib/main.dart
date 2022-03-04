@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TesteSnackbarUm(),
+      home: const TesteTableCalendarPage(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
