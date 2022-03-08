@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teste_lancamentos/teste_snackbar/teste_snackbar_um.dart';
-import 'package:teste_lancamentos/teste_table_calendar/teste_table_calendar_page.dart';
+import 'package:teste_lancamentos/checkbox_flutter/checkbox_tile_flutter_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TesteTableCalendarPage(),
+      home: const CheckboxTileFlutterPage(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [

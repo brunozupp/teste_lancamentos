@@ -63,14 +63,11 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                 }
 
                 endRange = null;
-                
+
                 setState(() {
                   
                 });
               },
-              // holidayPredicate: (date) {
-                
-              // },
               calendarBuilders: CalendarBuilders<DateTime>(
                 markerBuilder: (_,date,events) {
 
@@ -100,67 +97,22 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
               rangeStartDay: initialRange,
               rangeEndDay: endRange,
               rangeSelectionMode: RangeSelectionMode.toggledOff,
-              // onRangeSelected: (DateTime? start, DateTime? end, DateTime focusedDay) {
-              //   setState(() {
-
-              //     log("Start - $start");
-              //     log("End - $end");
-              //     log("focusedDay - $focusedDay");
-              //     log("selectedDay - $initialRange");
-              //     log("\n");
-
-              //     // Mês anterior e pode selecionar apenas os últimos 5 dias úteis
-              //     if(start != null && (_currentDateSystem.month - 1) == start.month) {
-
-              //       // O dia vai estar setado para o último dia do mês
-              //       DateTime lastDayFromPreviousMonth = DateTime(start.year, _currentDateSystem.month, 0);
-              //       DateTime fifthLastDayFromPreviousMonth = lastDayFromPreviousMonth.subtract(const Duration(days: 4));
-
-              //       log("lastDayFromPreviousMonth - $lastDayFromPreviousMonth");
-              //       log("fifthLastDayFromPreviousMonth - $fifthLastDayFromPreviousMonth");
-
-              //       if(start.isBefore(fifthLastDayFromPreviousMonth)) {
-              //         initialRange = null;
-              //         endRange = null;
-              //         return;
-              //       }
-              //     }
-                  
-              //     // Caso não seja o mesmo ano da data atual ou do mesmo mês, respeitando a  validação do mês anterior acima, vai limpar tudo
-              //     if((start != null && start.year < _currentDateSystem.year) || _currentDateSystem.month - start!.month > 1) {
-              //       initialRange = null;
-              //       endRange = null;
-              //       return;
-              //     }
-                  
-              //     if(initialRange != null && endRange != null) {
-              //       initialRange = null;
-              //       endRange = null;
-              //     }
-
-              //     if(initialRange == null) {
-              //       initialRange = start;
-              //       return;
-              //     }
-
-              //     if(initialRange != null && start.isBefore(initialRange!)) {
-              //       initialRange = start;
-              //       endRange = null;
-              //       return;
-              //     }
-
-              //     if(initialRange != null) {
-              //       endRange = start;
-              //       return;
-              //     }         
-              //   });
-              // },
               onDaySelected: (selectedDay, focusedDay) {
-                
+
+                print("\n");
+                print("selectedDay = $selectedDay");
+                print("focusedDay = $focusedDay");
+
                 setState(() {
+
+                  if(selectedDay.month != focusedDay.month) {
+                    return;
+                  }
                   
                   // Caso a data para selecionar esteja fora do range do mês atual ou do mês anterior, não executa nada
                   if (((_currentDateSystem.month - 1) != focusedDay.month && _currentDateSystem.month != focusedDay.month)) {
+                    initialRange = focusedDay;
+                    endRange = null;
                     return;
                   }
 
@@ -217,11 +169,11 @@ class _TesteTableCalendarPageState extends State<TesteTableCalendarPage> {
                   color: Colors.transparent,
                   shape: BoxShape.circle,
                 ),
-                rangeEndDecoration: BoxDecoration(
+                rangeEndDecoration: const BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
-                rangeStartDecoration: BoxDecoration(
+                rangeStartDecoration: const BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
