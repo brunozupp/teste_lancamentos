@@ -46,7 +46,29 @@ class _CheckboxComponentState extends State<CheckboxComponent> {
         padding: widget.padding,
         child: Row(
           children: [
-            _buildIcon(value),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 1000),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+
+                var anime = ScaleTransition(
+                  child: child,
+                  scale: animation
+                );
+
+                // var anime = RotationTransition(
+                //   turns: animation,
+                //   child: child,
+                // );
+
+                // var anime = SizeTransition(
+                //   sizeFactor: animation,
+                //   child: child,
+                // );
+
+                return anime;
+              },
+              child: _buildIcon(value),
+            ),
             
             SizedBox(
               width: widget.spaceBetweenIconAndDescription,
@@ -75,6 +97,7 @@ class _CheckboxComponentState extends State<CheckboxComponent> {
     if(value) {
       return Icon(
         Icons.check_box,
+        key: const ValueKey(1), // Preciso da key por ser widgets do mesmo tipo que está no switch
         color: Colors.green[900],
         size: size,
       );
@@ -82,6 +105,7 @@ class _CheckboxComponentState extends State<CheckboxComponent> {
 
     return const Icon(
       Icons.check_box_outline_blank,
+      key: ValueKey(2),
       color: Colors.black,
       size: size,
     );
