@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:teste_lancamentos/checkbox_custom/checkbox_custom_page.dart';
-import 'package:teste_lancamentos/checkbox_flutter/checkbox_tile_flutter_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:teste_lancamentos/foto/foto_page.dart';
+import 'package:teste_lancamentos/glassmorphism_teste/glassmorphism_home.dart';
+import 'package:teste_lancamentos/glassmorphism_teste/teste_glass_morphism.dart';
 import 'package:teste_lancamentos/listener_list_view/listener_list_view_builder.dart';
-import 'package:teste_lancamentos/teste_list_view_builder/teste_list_view_builder_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ListenerListViewBuilder(),
+      home: const TesteGlassMorphism(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
