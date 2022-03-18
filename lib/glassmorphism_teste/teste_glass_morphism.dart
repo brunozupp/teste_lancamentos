@@ -1,25 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:teste_lancamentos/glassmorphism_teste/glass_morphism.dart';
 
-class TesteGlassMorphism extends StatelessWidget {
+enum Empresa {
+  deal,
+  ambev,
+  gft,
+  will,
+  nubank,
+}
+
+class TesteGlassMorphism extends StatefulWidget {
 
   const TesteGlassMorphism({ Key? key }) : super(key: key);
 
-   @override
-   Widget build(BuildContext context) {
+  @override
+  State<TesteGlassMorphism> createState() => _TesteGlassMorphismState();
+}
+
+class _TesteGlassMorphismState extends State<TesteGlassMorphism> {
+  
+  var empresa = Empresa.deal;
+
+  String obterDescricao(Empresa empresa) {
+    switch(empresa) {
+      case Empresa.deal:
+        return "Deal";
+      case Empresa.ambev:
+        return "Ambev";
+      case Empresa.gft:
+        return "GFT";
+      case Empresa.will:
+        return "Will";
+      case Empresa.nubank:
+        return "Nubank";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     final width = MediaQuery.of(context).size.width;
-    print(width);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Glassmorphism'),
+        actions: [
+          PopupMenuButton<Empresa>(
+            color: Colors.transparent,
+            elevation: 0,
+            initialValue: empresa,
+            onSelected: (Empresa result) { 
+              setState(() { 
+                empresa = result; 
+              }); 
+            },
+            padding: EdgeInsets.zero,
+
+            itemBuilder: (BuildContext context) => Empresa.values.map((e) {
+
+              //final width = MediaQuery.of(context).size.width;
+
+              return PopupMenuItem<Empresa>(
+                child: SizedBox(
+                  width: width,
+                  child: GlassMorphism(
+                    blur: 20, 
+                    opacity: 0.5, 
+                    color: Colors.white,
+                    
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Text(obterDescricao(e)),
+                    ),
+                  ),
+                ),
+                padding: EdgeInsets.zero,
+                value: e,
+              );
+            }).toList(),
+          ),
+        ],
       ),
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               children: [
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    obterDescricao(empresa).toUpperCase(),
+                  ),
+                ),
+
                 _gerarContainer(Colors.red),
                 _gerarContainer(Colors.blue),
                 _gerarContainer(Colors.yellow),
@@ -30,6 +105,19 @@ class TesteGlassMorphism extends StatelessWidget {
                 _gerarContainer(Colors.red),
                 _gerarContainer(Colors.blue),
                 _gerarContainer(Colors.yellow),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _gerarContainer(Colors.green),
+                    ),
+                    Expanded(
+                      child: _gerarContainer(Colors.red),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                ),
               ],
             ),
           ),
@@ -46,13 +134,13 @@ class TesteGlassMorphism extends StatelessWidget {
                 ),
                 child: GlassMorphism(
                   blur: 20,
-                  opacity: 0.2,
+                  opacity: 0.1,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     width: 1.5,
                     color: Colors.purple.withOpacity(0.5),
                   ),
-                  color: Colors.purple,
+                  color: Colors.white,
                   child: ElevatedButton(
                     onPressed: () {}, 
                     child: const Text(
@@ -67,9 +155,9 @@ class TesteGlassMorphism extends StatelessWidget {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       )),
-                      textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+                      textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
                         fontSize: 18
-                      ))
+                      )),
                     ),
                   ),
                 ),
@@ -80,7 +168,7 @@ class TesteGlassMorphism extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _gerarContainer(Color color) {
     return Container(
       width: double.infinity,
