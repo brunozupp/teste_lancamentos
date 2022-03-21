@@ -1,3 +1,4 @@
+import 'package:contrast_checker/contrast_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:teste_lancamentos/texto_colorido_background/text_colorful.dart';
@@ -19,7 +20,7 @@ class TextoColoridoBackground extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Glassmorphism'),
+        title: const Text('Cores FDP'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -50,29 +51,19 @@ class TextoColoridoBackground extends StatelessWidget {
                             animationDuration: 1000,
                             lineHeight: 30.0,
                             percent: valorEqualizado,
-                            center: Text(
-                              "Em Andamento",
-                              style: TextStyle(
-                                fontSize: 80,
-                                color: ThemeData.estimateBrightnessForColor(Colors.red) ==
-                                        Brightness.light
-                                    ? Colors.purple
-                                    : Colors.orange,
+                            center: TextColorful2(
+                              text: const Text("Em Andamento",),
+                              gradient: LinearGradient(
+                                stops: [
+                                  valorEqualizado + 0.5,
+                                  valorEqualizado + 0.5,
+                                ],
+                                colors: const [
+                                  Colors.purple,
+                                  Colors.blue
+                                ],
                               ),
                             ),
-                            // center: TextColorful2(
-                            //   text: const Text("Em Andamento",),
-                            //   gradient: LinearGradient(
-                            //     stops: [
-                            //       valorEqualizado,
-                            //       valorEqualizado
-                            //     ],
-                            //     colors: const [
-                            //       Colors.green,
-                            //       Colors.blue
-                            //     ],
-                            //   ),
-                            // ),
                             progressColor: Colors.red,
                             backgroundColor: Colors.grey[200],
                           ),
@@ -106,11 +97,11 @@ class TextoColoridoBackground extends StatelessWidget {
                               text: const Text("Em Andamento",),
                               gradient: LinearGradient(
                                 stops: [
-                                  valorEqualizado,
-                                  valorEqualizado
+                                  valorEqualizado + 0.5,
+                                  valorEqualizado + 0.5
                                 ],
                                 colors: const [
-                                  Colors.green,
+                                  Colors.purple,
                                   Colors.blue
                                 ],
                               ),
@@ -148,15 +139,68 @@ class TextoColoridoBackground extends StatelessWidget {
                               text: const Text("Em Andamento",),
                               gradient: LinearGradient(
                                 stops: [
-                                  valorEqualizado,
-                                  valorEqualizado
+                                  valorEqualizado + 0.5,
+                                  valorEqualizado + 0.5,
                                 ],
                                 colors: const [
-                                  Colors.green,
+                                  Colors.purple,
                                   Colors.blue
                                 ],
                               ),
                             ),
+                            progressColor: Colors.red,
+                            backgroundColor: Colors.grey[200],
+                          ),
+                        );
+                      }
+                    ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    LayoutBuilder(
+                      builder: (context,constraints) {
+
+                        double valorEqualizado = equalizar(
+                          total: total, 
+                          valor: 90
+                        ) - 0.1;
+
+                        print("Valor equalizado $valorEqualizado");
+
+                        var backgroundColor = Colors.red; // this color could be anything
+                        var foregroundColor = backgroundColor.computeLuminance();
+
+                        var cor = foregroundColor > 0.23 ? Colors.purple : Colors.blue;
+
+                        print("cor $foregroundColor");
+
+
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: constraints.maxWidth,
+                          ),
+                          child: LinearPercentIndicator(
+                            animation: true,
+                            barRadius: const Radius.circular(20),
+                            animationDuration: 1000,
+                            lineHeight: 30.0,
+                            percent: valorEqualizado,
+                            center: Text("Hello World", style: TextStyle(color: cor)),
+                            // center: TextColorful2(
+                            //   text: const Text("Em Andamento",),
+                            //   gradient: LinearGradient(
+                            //     stops: [
+                            //       valorEqualizado,
+                            //       valorEqualizado,
+                            //     ],
+                            //     colors: const [
+                            //       Colors.purple,
+                            //       Colors.blue
+                            //     ],
+                            //   ),
+                            // ),
                             progressColor: Colors.red,
                             backgroundColor: Colors.grey[200],
                           ),

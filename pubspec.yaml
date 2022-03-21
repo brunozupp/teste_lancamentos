@@ -41,6 +41,8 @@ dependencies:
   top_snackbar_flutter: ^1.0.2
   image_picker: ^0.8.4+10
   percent_indicator: ^4.0.0
+  contrast_checker: ^0.0.2
+  fl_chart: ^0.46.0
 
 dev_dependencies:
   flutter_test:

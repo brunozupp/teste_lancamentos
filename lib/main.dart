@@ -3,6 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:teste_lancamentos/glassmorphism_teste/glassmorphism_home.dart';
 import 'package:teste_lancamentos/glassmorphism_teste/teste_glass_morphism.dart';
 import 'package:teste_lancamentos/listener_list_view/listener_list_view_builder.dart';
+import 'package:teste_lancamentos/spike_graficos/burndow2_grafico.dart';
+import 'package:teste_lancamentos/spike_graficos/burndow3_grafico.dart';
+import 'package:teste_lancamentos/spike_graficos/burndow_grafico.dart';
+import 'package:teste_lancamentos/spike_graficos/progresso_grafico.dart';
 import 'package:teste_lancamentos/texto_colorido_background/texto_colorido_background.dart';
 
 void main() {
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TextoColoridoBackground(),
+      home: const Burndown3Grafico(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
