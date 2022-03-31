@@ -8,6 +8,7 @@ import 'package:teste_lancamentos/spike_graficos/burndow3_grafico.dart';
 import 'package:teste_lancamentos/spike_graficos/burndow_grafico.dart';
 import 'package:teste_lancamentos/spike_graficos/cfd_grafico.dart';
 import 'package:teste_lancamentos/spike_graficos/consolidado_radar_grafico.dart';
+import 'package:teste_lancamentos/spike_graficos/donet_grafico.dart';
 import 'package:teste_lancamentos/spike_graficos/progresso_grafico.dart';
 import 'package:teste_lancamentos/texto_colorido_background/texto_colorido_background.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CfdGrafico(),
+      home: const DonetGrafico(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
