@@ -43,6 +43,7 @@ dependencies:
   percent_indicator: ^4.0.0
   contrast_checker: ^0.0.2
   fl_chart: ^0.46.0
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:teste_lancamentos/foto/foto_page.dart';
 import 'package:teste_lancamentos/glassmorphism_teste/glassmorphism_home.dart';
 import 'package:teste_lancamentos/glassmorphism_teste/teste_glass_morphism.dart';
 import 'package:teste_lancamentos/listener_list_view/listener_list_view_builder.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DonetGrafico(),
+      home: const FotoPage(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
