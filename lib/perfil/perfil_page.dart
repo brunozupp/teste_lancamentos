@@ -3,15 +3,15 @@ import 'package:teste_lancamentos/perfil/widgets/infos_widget.dart';
 import 'package:teste_lancamentos/perfil/widgets/metrics_widget.dart';
 import 'package:teste_lancamentos/perfil/widgets/photo_widget.dart';
 
-class DragDropPage extends StatefulWidget {
+class PerfilPage extends StatefulWidget {
   
-  const DragDropPage({Key? key}) : super(key: key);
+  const PerfilPage({Key? key}) : super(key: key);
 
   @override
-  State<DragDropPage> createState() => _DragDropPageState();
+  State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _DragDropPageState extends State<DragDropPage> {
+class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,18 +22,38 @@ class _DragDropPageState extends State<DragDropPage> {
 
         child: Column(
           children: [
+
+            const SizedBox(
+              height: 150,
+            ),
+
             Stack(
+              clipBehavior: Clip.none,
               children: [
-                PhotoWidget(),
                 Card(
+                  color: Colors.grey[300],
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   child: Column(
-                    children: [
+                    children: const [
+
+                      SizedBox(
+                        height: 100,
+                      ),
 
                       InfosWidget(),
 
                       MetricsWidget(),
                     ],
                   ),
+                ),
+                
+                const Positioned(
+                  top: -80,
+                  left: 0,
+                  right: 0,
+                  child: PhotoWidget(),
                 ),
               ],
             ),
