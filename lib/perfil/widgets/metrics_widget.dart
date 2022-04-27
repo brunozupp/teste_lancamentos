@@ -34,6 +34,7 @@ class _MetricsWidgetState extends State<MetricsWidget> {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: ReorderableListView(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         onReorder: _onReorder,
         children: metrics.map((e) => Padding(
