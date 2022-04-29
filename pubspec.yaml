@@ -45,6 +45,7 @@ dependencies:
   fl_chart: ^0.46.0
   shared_preferences: ^2.0.13
   flutter_switch: ^0.3.2
+  animated_bottom_navigation_bar: ^0.3.2
 
 dev_dependencies:
   flutter_test:
