@@ -15,6 +15,24 @@ class _FotoPageState extends State<FotoPage> {
   final ImagePicker _picker = ImagePicker();
 
   File? file;
+
+  bool error = false;
+  bool loading = false;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   setState(() {
+  //     loading = true;
+  //   });
+
+  //   Future.delayed(const Duration(seconds: 3)).then((value) {
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //   });
+  // }
   
   @override
   Widget build(BuildContext context) {
@@ -37,12 +55,20 @@ class _FotoPageState extends State<FotoPage> {
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.blue[900],
-                      child: file == null ? const Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 50,
-                      ) : null,
-                      backgroundImage: file != null ? FileImage(file!) : null,
+                      // child: file == null ? const Icon(
+                      //   Icons.person,
+                      //   color: Colors.white,
+                      //   size: 50,
+                      // ) : null,
+                      child: _buildStatus(),
+                      // onBackgroundImageError: loading ? null : (object, stackTrace) {
+                      //   print("ERRO");
+                      //   setState(() {
+                      //     error = true;
+                      //   });
+                      // },
+                      // backgroundImage: loading ? null : const NetworkImage("https://narutokonoha.com/wp-content/uploads/2019/1/Imagens-do-anime-Naruto-para-Imprimir-e-Colorir.jpg"),
+                      //backgroundImage: file != null ? FileImage(file!) : null,
                     ),
                   ),
                   Positioned(
@@ -89,19 +115,63 @@ class _FotoPageState extends State<FotoPage> {
     );
   }
 
-  Widget _buildAvatarImage(File? file) {
+  Widget _buildStatus() {
 
-    if(file == null) {
-      return const Icon(
-        Icons.person,
-        color: Colors.white,
-        size: 50,
-      );
-    }
+    // if(loading) {
+    //   print("LOADING DAS INFORMAÇÕES PESSOAIS");
+    //   return const CircularProgressIndicator();
+    // }
 
-    return Image.file(
-      file
+    return Image.network(
+      "https://flutter.github.io/assets-for-api-docs/assets/widgets/falcon.jpg",
+      loadingBuilder: (context, child, loadingProgress) {
+
+        if (loadingProgress == null) {
+        print(child.runtimeType);
+
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: SizedBox.fromSize(
+              size: Size.fromRadius(70),
+              child: child,
+            ),
+          );
+        }
+        
+        print("LOADING");
+        return const CircularProgressIndicator();
+      },
+      errorBuilder: (context, child, stackTrace) {
+        print("ERROR");
+        return Icon(
+          Icons.error,
+          color: Colors.white,
+          size: 50,
+        );
+      },
+      
+      fit: BoxFit.fill,
     );
+
+    // return Icon(
+    //   error
+    //   ? Icons.error
+    //   : Icons.engineering,
+    //   color: Colors.white,
+    //   size: 50,
+    // );
+
+    // if(file == null) {
+    //   return const Icon(
+    //     Icons.person,
+    //     color: Colors.white,
+    //     size: 50,
+    //   );
+    // }
+
+    // return Image.file(
+    //   file
+    // );
   }
 
   Future<ImageSource?> _getImageSource(BuildContext context) async {
