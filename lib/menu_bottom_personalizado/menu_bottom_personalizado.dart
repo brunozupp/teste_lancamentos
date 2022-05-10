@@ -21,10 +21,13 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
   @override
   Widget build(BuildContext context) {
+
+    final width = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: width,
           height: 100,
           //color: Colors.purple,
           color: Colors.transparent,
@@ -32,13 +35,13 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
         Positioned(
           bottom: 0,
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: width,
             height: 70,
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                for(var i = 0; i < 5; i++)
+                for(var i = 0; i < icons.length; i++)
                   IconButton(
                     icon: Icon(
                       icons[i],
@@ -56,6 +59,7 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
         ),
         Positioned(
           bottom: 30,
+          left: ((width / icons.length) * (indexAtual + 1)) - 70,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -81,7 +85,7 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
               Container(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.green,
                   shape: BoxShape.circle
                 ),
