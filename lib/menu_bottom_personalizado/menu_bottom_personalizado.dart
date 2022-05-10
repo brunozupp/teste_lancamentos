@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MenuBottomPersonalizado extends StatefulWidget {
   const MenuBottomPersonalizado({ Key? key }) : super(key: key);
@@ -9,7 +10,7 @@ class MenuBottomPersonalizado extends StatefulWidget {
 
 class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
-  var indexAtual = 0;
+  int indexAtual = 1;
 
   List<_Icone> icons = [];
 
@@ -18,11 +19,9 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
     super.initState();
 
     icons = [
-      Icons.access_alarm_rounded,
-      //Icons.engineering,
-      //Icons.home,
-      Icons.person,
-      Icons.graphic_eq
+      Icons.build_rounded,
+      Icons.add_rounded,
+      Icons.person
     ].map((e) => _Icone(
       icon: e,
       key: GlobalKey(),
@@ -65,7 +64,7 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
                           Icon(
                             icons[i].icon,
                             key: icons[i].key,
-                            color: i == indexAtual ? Colors.transparent: Colors.black,
+                            color: i == indexAtual ? Colors.transparent: const Color(0xFF0B4C81),
                           ),
                           const SizedBox(
                             height: 5,
@@ -131,10 +130,28 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
                     end: Alignment.bottomCenter,
                   ),
                 ),
-                child: Icon(
-                  icons[indexAtual].icon,
-                  color: Colors.white,
-                  size: 35,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 600),
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return AlignTransition(
+                      alignment: Tween<AlignmentGeometry>(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.center,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.linear,
+                        ),
+                      ), 
+                      child: child
+                    );
+                  },
+                  child: Icon(
+                    icons[indexAtual].icon,
+                    key: ValueKey(icons[indexAtual]),
+                    color: Colors.white,
+                    size: 35,
+                  ),
                 ),
               ),
             ],
@@ -152,17 +169,19 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
   double _position(GlobalKey key) {
 
-    final iconPosition = _getOffsetX(key);
+    var iconPosition = _getOffsetX(key);
+
+    iconPosition ??= (MediaQuery.of(context).size.width / 2) - 12;
 
     if(indexAtual == 0) {
-      return iconPosition == null ? 25 : iconPosition - 35;
+      return iconPosition - 35;
     }
 
     if(indexAtual == icons.length - 1) {
-      return iconPosition! - 30;
+      return iconPosition - 30;
     }
 
-    return iconPosition! - 35;
+    return iconPosition - 35;
   }
 }
 
