@@ -11,13 +11,24 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
   var indexAtual = 0;
 
-  final icons = [
-    Icons.access_alarm_rounded,
-    Icons.engineering,
-    Icons.home,
-    Icons.person,
-    Icons.graphic_eq
-  ];
+  List<_Icone> icons = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    icons = [
+      Icons.access_alarm_rounded,
+      //Icons.engineering,
+      //Icons.home,
+      Icons.person,
+      Icons.graphic_eq
+    ].map((e) => _Icone(
+      icon: e,
+      key: GlobalKey(),
+    )).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,24 +53,50 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 for(var i = 0; i < icons.length; i++)
-                  IconButton(
-                    icon: Icon(
-                      icons[i],
-                      color: i == indexAtual ? Colors.transparent: Colors.black,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: i == indexAtual ? null : () {
+                        setState(() {
+                          indexAtual = i;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          const Spacer(),
+                          Icon(
+                            icons[i].icon,
+                            key: icons[i].key,
+                            color: i == indexAtual ? Colors.transparent: Colors.black,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Visibility(
+                            visible: i != indexAtual,
+                            child: const Text(
+                              "Algum",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
                     ),
-                    onPressed: i == indexAtual ? null : () {
-                      setState(() {
-                        indexAtual = i;
-                      });
-                    },
                   ),
               ],
             ),
           ),
         ),
-        Positioned(
+
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 600),
+          width: 100,
           bottom: 30,
-          left: ((width / icons.length) * (indexAtual + 1)) - 70,
+          left: _position(icons[indexAtual].key),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -90,7 +127,7 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
                   shape: BoxShape.circle
                 ),
                 child: Icon(
-                  icons[indexAtual],
+                  icons[indexAtual].icon,
                 ),
               ),
             ],
@@ -99,4 +136,37 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
       ],
     );
   }
+
+  double? _getOffsetX(GlobalKey key) {
+    RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+    Offset? position = box?.localToGlobal(Offset.zero);
+    return position?.dx;
+  }
+
+  // Para 4 ícones
+  double _position(GlobalKey key) {
+
+    final iconPosition = _getOffsetX(key);
+
+    if(indexAtual == 0) {
+      return iconPosition == null ? 3 : iconPosition - 35;
+    }
+
+    if(indexAtual == icons.length - 1) {
+      return iconPosition! - 40;
+    }
+
+    return iconPosition! - 35;
+  }
+}
+
+class _Icone {
+
+  final IconData icon;
+  final GlobalKey key;
+
+  _Icone({
+    required this.icon,
+    required this.key,
+  });
 }
