@@ -15,7 +15,6 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     icons = [
@@ -39,7 +38,7 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
       children: [
         Container(
           width: width,
-          height: 100,
+          height: 110,
           //color: Colors.purple,
           color: Colors.transparent,
         ),
@@ -94,15 +93,14 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
 
         AnimatedPositioned(
           duration: const Duration(milliseconds: 600),
-          width: 100,
-          bottom: 30,
+          bottom: 25,
           left: _position(icons[indexAtual].key),
           child: Stack(
             alignment: Alignment.center,
             children: [
               Container(
-                width: 70,
-                height: 70,
+                width: 90,
+                height: 90,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
@@ -113,21 +111,30 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     stops: [
-                      0.42,
-                      0.42
+                      0.5,
+                      0.5
                     ]
                   ),
                 ),
               ),
               Container(
-                width: 50,
-                height: 50,
+                width: 70,
+                height: 70,
                 decoration: const BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.circle
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF2CA8FF),
+                      Color(0xFF0B4C81),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
                 child: Icon(
                   icons[indexAtual].icon,
+                  color: Colors.white,
+                  size: 35,
                 ),
               ),
             ],
@@ -143,17 +150,16 @@ class _MenuBottomPersonalizadoState extends State<MenuBottomPersonalizado> {
     return position?.dx;
   }
 
-  // Para 4 ícones
   double _position(GlobalKey key) {
 
     final iconPosition = _getOffsetX(key);
 
     if(indexAtual == 0) {
-      return iconPosition == null ? 3 : iconPosition - 35;
+      return iconPosition == null ? 25 : iconPosition - 35;
     }
 
     if(indexAtual == icons.length - 1) {
-      return iconPosition! - 40;
+      return iconPosition! - 30;
     }
 
     return iconPosition! - 35;
