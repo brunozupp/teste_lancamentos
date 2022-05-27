@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:teste_lancamentos/collpase_boardview_page.dart';
 import 'package:teste_lancamentos/foto/foto_page.dart';
 import 'package:teste_lancamentos/menu_bottom_personalizado/menu_bottom_page.dart';
 import 'package:teste_lancamentos/menu_perfumado/menu_perfumado_page.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TimePickerCustomPage(),
+      home: const CollapseBoardviewPage(),
       locale: const Locale("pt","BR"),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
