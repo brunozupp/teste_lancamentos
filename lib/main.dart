@@ -1,29 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:teste_lancamentos/teste_stepper/stepper_page.dart';
+import 'package:teste_lancamentos/app.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+Future<void> main() async {
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const StepperPage(),
-      locale: const Locale("pt","BR"),
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: const [
-        Locale("pt", "BR"),
-        Locale('en'),
-      ]
-    );
+  final String filename;
+
+  if(kReleaseMode) {
+    filename = "envs/.env_prod";
+  } else {
+    filename = "envs/.env_dev";
   }
+
+  await dotenv.load(fileName: filename);
+
+  runApp(const App());
 }
