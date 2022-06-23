@@ -102,15 +102,16 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
     super.build(context);
 
-    // print("dy:${dy}");
-    // print("topListY:${topListY}");
-    // print("bottomListY:${bottomListY}");
     if(boardViewController.hasClients) {
       WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
         try {
           boardViewController.position.didUpdateScrollPositionBy(0);
-        }catch(e){}
+        } catch(e,s) {
+          log("Erro na parte do build do boardview", error: e, stackTrace: s);
+        }
+
         bool _shown = boardViewController.position.maxScrollExtent!=0;
+        
         if(_shown != shown){
           setState(() {
             shown = _shown;
@@ -118,56 +119,46 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         }
       });
     }
+
     Widget listWidget = ListView.builder(
       physics: const ClampingScrollPhysics(),
       itemCount: widget.lists.length,
       scrollDirection: Axis.horizontal,
       controller: boardViewController,
       itemBuilder: (BuildContext context, int index) {
-        if (widget.lists[index].boardView == null) {
-          widget.lists[index] = BoardList(
-            items: widget.lists[index].items,
-            headerBackgroundColor: widget.lists[index].headerBackgroundColor,
-            backgroundColor: widget.lists[index].backgroundColor,
-            footer: widget.lists[index].footer,
-            header: widget.lists[index].header,
-            boardView: this,
-            draggable: widget.lists[index].draggable,
-            onDropList: widget.lists[index].onDropList,
-            onTapList: widget.lists[index].onTapList,
-            onStartDragList: widget.lists[index].onStartDragList,
-            borderRadius: widget.lists[index].borderRadius,
-            borderColor: widget.lists[index].borderColor,
-            borderWidth: widget.lists[index].borderWidth,
-          );
-        }
-        if (widget.lists[index].index != index) {
-          widget.lists[index] = BoardList(
-            items: widget.lists[index].items,
-            headerBackgroundColor: widget.lists[index].headerBackgroundColor,
-            backgroundColor: widget.lists[index].backgroundColor,
-            footer: widget.lists[index].footer,
-            header: widget.lists[index].header,
-            boardView: this,
-            draggable: widget.lists[index].draggable,
-            index: index,
-            onDropList: widget.lists[index].onDropList,
-            onTapList: widget.lists[index].onTapList,
-            onStartDragList: widget.lists[index].onStartDragList,
-            borderRadius: widget.lists[index].borderRadius,
-            borderColor: widget.lists[index].borderColor,
-            borderWidth: widget.lists[index].borderWidth,
-          );
-        }
 
-        var temp = Container(
-            width: widget.width,
-            padding: EdgeInsets.fromLTRB(0, 0, 0, widget.bottomPadding ?? 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[Expanded(child: widget.lists[index])],
-            ));
+        widget.lists[index] = BoardList(
+          key: widget.lists[index].key,
+          items: widget.lists[index].items,
+          headerBackgroundColor: widget.lists[index].headerBackgroundColor,
+          backgroundColor: widget.lists[index].backgroundColor,
+          footer: widget.lists[index].footer,
+          header: widget.lists[index].header,
+          boardView: this,
+          draggable: widget.lists[index].draggable,
+          index: index,
+          onDropList: widget.lists[index].onDropList,
+          onTapList: widget.lists[index].onTapList,
+          onStartDragList: widget.lists[index].onStartDragList,
+          borderRadius: widget.lists[index].borderRadius,
+          borderColor: widget.lists[index].borderColor,
+          borderWidth: widget.lists[index].borderWidth,
+        );
+
+        final temp = Container(
+          width: widget.width,
+          padding: EdgeInsets.fromLTRB(0, 0, 0, widget.bottomPadding ?? 0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: widget.lists[index],
+              ),
+            ],
+          ),
+        );
+
         if (draggedListIndex == index && draggedItemIndex == null) {
           return Opacity(
             opacity: 0.0,
@@ -178,6 +169,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         }
       },
     );
+
     if(widget.scrollbar == true){
       listWidget = VsScrollbar(
         controller: boardViewController,
@@ -277,7 +269,13 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
                 listStates[draggedListIndex!].boardListController.position.pixels - 5,
                 duration: const Duration(milliseconds: 10),
                 curve: Curves.linear,
-              ).whenComplete((){
+              ).whenComplete(() {
+                print("listStates $listStates");
+                print("draggedListIndex $draggedListIndex");
+
+                if(draggedListIndex == null) {
+                  return;
+                }
 
                 pos -= listStates[draggedListIndex!].boardListController.position.pixels;
                 
@@ -322,9 +320,17 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
               isScrolling = true;
               double pos = listStates[draggedListIndex!].boardListController.position.pixels;
               listStates[draggedListIndex!].boardListController.animateTo(
-                  listStates[draggedListIndex!].boardListController.position.pixels + 5,
-                  duration: const Duration(milliseconds: 10),
-                  curve: Curves.ease).whenComplete((){
+                listStates[draggedListIndex!].boardListController.position.pixels + 5,
+                duration: const Duration(milliseconds: 10),
+                curve: Curves.linear,
+              ).whenComplete(() {
+                print("listStates $listStates");
+                print("draggedListIndex $draggedListIndex");
+
+                if(draggedListIndex == null) {
+                  return;
+                }
+
                 pos -= listStates[draggedListIndex!].boardListController.position.pixels;
                 
                 initialY ??= 0;
