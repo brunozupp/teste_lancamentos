@@ -25,7 +25,7 @@ class BoardList extends StatefulWidget {
   final EdgeInsetsGeometry borderWidth;
 
   const BoardList({
-    Key? key,
+    super.key,
     this.header,
     this.footer,
     this.items,
@@ -40,7 +40,7 @@ class BoardList extends StatefulWidget {
     this.borderColor = Colors.white,
     this.borderWidth = EdgeInsets.zero,
     this.index,
-  }) : super(key: key);
+  });
 
   final int? index;
 

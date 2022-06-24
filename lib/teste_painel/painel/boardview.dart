@@ -21,7 +21,7 @@ class BoardView extends StatefulWidget {
   final OnDropBottomWidget? onDropItemInMiddleWidget;
 
   const BoardView({
-    Key? key, 
+    super.key, 
     this.itemInMiddleWidget,
     this.scrollbar,
     this.scrollbarStyle, 
@@ -33,7 +33,7 @@ class BoardView extends StatefulWidget {
     this.width = 280, 
     this.middleWidget, 
     this.bottomPadding
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -270,8 +270,6 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
                 duration: const Duration(milliseconds: 10),
                 curve: Curves.linear,
               ).whenComplete(() {
-                print("listStates $listStates");
-                print("draggedListIndex $draggedListIndex");
 
                 if(draggedListIndex == null) {
                   return;
@@ -324,8 +322,6 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
                 duration: const Duration(milliseconds: 10),
                 curve: Curves.linear,
               ).whenComplete(() {
-                print("listStates $listStates");
-                print("draggedListIndex $draggedListIndex");
 
                 if(draggedListIndex == null) {
                   return;
@@ -376,7 +372,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
           if (widget.lists.length > draggedListIndex! + 1 && dx! > rightListX! - 45) {
             //scroll right
-            if (boardViewController != null && boardViewController.hasClients) {
+            if (boardViewController.hasClients) {
               boardViewController.animateTo(
                 boardViewController.position.pixels + 5,
                 duration: const Duration(milliseconds: 10), 

@@ -18,7 +18,7 @@ typedef OnDragItem = void Function(int oldListIndex, int oldItemIndex, int newLi
 class BoardItem extends StatefulWidget {
   
   final BoardListState? boardList;
-  final Widget? item;
+  final Widget item;
   final int? index;
   final OnDropItem? onDropItem;
   final OnTapItem? onTapItem;
@@ -27,16 +27,16 @@ class BoardItem extends StatefulWidget {
   final bool draggable;
 
   const BoardItem({
-    Key? key,
+    super.key,
     this.boardList,
-    this.item,
+    required this.item,
     this.index,
     this.onDropItem,
     this.onTapItem,
     this.onStartDragItem,
     this.onDragItem,
     this.draggable = true,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() {
