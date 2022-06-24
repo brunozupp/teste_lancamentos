@@ -106,11 +106,11 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
       WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
         try {
           boardViewController.position.didUpdateScrollPositionBy(0);
-        } catch(e,s) {
-          log("Erro na parte do build do boardview", error: e, stackTrace: s);
+        } catch(_) {
+          log("Não é possível mudar a posição no momento");
         }
 
-        bool _shown = boardViewController.position.maxScrollExtent!=0;
+        bool _shown = boardViewController.position.maxScrollExtent != 0;
         
         if(_shown != shown){
           setState(() {
